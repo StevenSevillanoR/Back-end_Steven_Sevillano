@@ -32,6 +32,7 @@ function playVideoOnScroll(){
   var ultimoScroll = 0,
       intervalRewind;
   var video = document.getElementById('vidFondo');
+  video.muted = true;
   $(window)
     .scroll((event)=>{
       var scrollActual = $(window).scrollTop();
@@ -44,55 +45,12 @@ function playVideoOnScroll(){
      ultimoScroll = scrollActual;
     })
     .scrollEnd(()=>{
-      video.pause();
+      video.play();
     }, 10)
 }
 
 inicializarSlider();
 playVideoOnScroll();
 
-$("#mostrarTodos").click(function(){
-  showAllInfo();
-})
 
-function showAllInfo(data){
-  //event.preventDefault();
-  $.ajax({
-    url: './index.php',
-    dataType: 'json',
-    cache: false,
-    contentType: false,
-    processData: false,
-    data: data,
-    type: 'post',
-    success: function(data){
-      if (data!="") {
-        mostrarTodo(data);
-      }else {
-        window.location.href = 'index.html';
-      }
-    },
-    error: function (xhr, ajaxOptions, thrownError) {
-        alert(xhr.status);
-        alert(thrownError);
-      }
-  })
-}
 
-function mostrarTodo(data){
-  for (var i = 1; i<data.length; i++) {
-    $(".colContenido").append(`
-    <div class="itemMostrado card">
-        <img src="img/home.jpg">
-        <div class="col">
-          <p><b>Dirección:</b>${data.Direccion}</p>
-          <p><b>Ciudad:</b>${data.Ciudad}</p>
-          <p><b>Teléfono:</b></p>
-          <p><b>Código Postal:</b></p>
-          <p><b>Tipo:</b></p>
-          <p><b>Precio:</b></p>  
-          <div class="divider"></div>
-        </div>                     
-      </div>`);
-  }  
-}
